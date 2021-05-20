@@ -1,0 +1,33 @@
+.PlebCardBody{
+    /*max-width: 225px;*/
+    height:45vh;
+    background-color: #4e56696c;
+    position: relative;
+    margin-top:10px;
+    margin-bottom:10px;
+}
+
+
+
+.PlebCardMedia{
+    height:80%;
+    width:100%;
+    position:absolute;
+    z-index:2;
+    top:0;
+}
+
+.PlebCardContent{
+    position: absolute;
+    top:0;
+    z-index: 3;
+    color: blanchedalmond;
+    background:rgba(0, 0, 0, 0.329);
+    height:80%;
+    width:100%;
+}
+
+.PlebCardContent:hover{
+    transition: all 0.5s;
+    background-color: rgba(0, 0, 0, 0.212);
+}

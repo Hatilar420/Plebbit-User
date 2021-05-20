@@ -42,7 +42,7 @@ export default function HeaderComponent() {
 
     return (
         <div>
-            <Navbar color="dark" className="p-2" dark expand="md">
+            <Navbar color="dark" className="p-2 MainHeadContainer" dark expand="md">
         <NavbarBrand href="/">Plebbit</NavbarBrand>
         <NavbarToggler  />
         <Collapse navbar>

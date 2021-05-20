@@ -11,7 +11,7 @@ function App() {
           <div className="MainHead">
             <HeaderComponent/>
           </div>
-          <div className="container-fluid">
+          <div className="container-fluid backgroundBlack">
             <Switch>
                 <Route exact path="/" component={FrontPageComponent}/>
                 <Route exact path="/Landing" component={LandingComponent}/>
