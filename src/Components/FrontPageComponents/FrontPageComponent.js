@@ -1,6 +1,6 @@
-import React , {useState} from 'react'
+import React , {useEffect, useState} from 'react'
 import Card from '@material-ui/core/Card';
-import '../Styles/FrontPageComponentStyle.css'
+import '../../Styles/FrontPageComponentStyle.css'
 import CardContent from '@material-ui/core/CardContent'
 import Typography from '@material-ui/core/Typography';
 import CardActionArea from '@material-ui/core/CardActionArea';
@@ -8,23 +8,41 @@ import { CardActions, CardMedia } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
+import FullScreenDialog from './FullScreenDialog';
 export default function FrontPageComponent() {
 
     const [PostState, setPostState] = useState([{
+        id:124,
         Title :"First Content",
         Content :"This is a temp content , Lorem ipsum",
         ImageUrl: "https://miro.medium.com/max/4038/1*KoZPn1bF5q29om6skmeENg.png",
-        isLiked:false
+        isLiked:false,
+        DialogOpen:false
     },{
+        id:2134,
         Title :"First Content",
         Content :"This is a temp content , Lorem ipsum",
         ImageUrl: "https://miro.medium.com/max/4038/1*KoZPn1bF5q29om6skmeENg.png",
-        isLiked:false
+        isLiked:false,
+        DialogOpen:false
     }
 
 ]);
 
-   
+
+    const ShowFullWidthDialog = (post,index)=>{
+        post.DialogOpen = true;
+        PostState[index] = post
+        setPostState([...PostState])
+        console.log(PostState[index])
+    }
+
+    const CloseFullWidthDialog = (post,index) =>{
+        post.DialogOpen = false;
+        PostState[index] = post
+        setPostState([...PostState])
+        console.log(PostState[index])
+    }
 
     const ShowContentOnHover = (ref) =>{
        ref.current.style.display="block"
@@ -54,7 +72,7 @@ export default function FrontPageComponent() {
                                         image={post.ImageUrl}
                                         className="PlebCardMedia"   
                                 /> 
-                            <CardActionArea className="PlebCardContent" onMouseEnter={() => ShowContentOnHover(CardContentRef)} onMouseLeave={() => ShowContentOnMouseLeave(CardContentRef)}>
+                            <CardActionArea onClick={ (event) => ShowFullWidthDialog(post,index) } className="PlebCardContent" onMouseEnter={() => ShowContentOnHover(CardContentRef)} onMouseLeave={() => ShowContentOnMouseLeave(CardContentRef)}>
                                 <CardContent ref={CardContentRef} style={{display:"none"}}>
                                    <Typography gutterBottom variant="h5" style={{color:"white"}} component="h2">
                                             {post.Title}
@@ -69,12 +87,14 @@ export default function FrontPageComponent() {
                                     <ShareIcon style={{color:"white",fontSize:"25px"}} />
                                 </IconButton>
                             </CardActions>
+                            <FullScreenDialog Post={post} Index={index} handleClose={CloseFullWidthDialog}/>
                         </Card>
                     )
     }
 
+
     const MapPostState = () =>{
-        return PostState.map( (x,index) => <div className="col-3">{RenderCard(x,index)}</div>  )
+        return PostState.map( (x,index) => <div key={x.id} className="col-3">{RenderCard(x,index)}</div>  )
     }
 
     return (

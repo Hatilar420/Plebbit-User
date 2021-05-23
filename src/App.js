@@ -2,7 +2,7 @@ import './App.css';
 import {BrowserRouter as Router , Switch , Route} from 'react-router-dom'
 import HeaderComponent from './Components/HeaderComponent';
 import LandingComponent from './Components/LandingComponent';
-import FrontPageComponent from './Components/FrontPageComponent';
+import FrontPageComponent from './Components/FrontPageComponents/FrontPageComponent';
 
 function App() {
   return (
