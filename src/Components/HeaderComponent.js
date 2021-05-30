@@ -76,8 +76,16 @@ export default function HeaderComponent() {
         <Button color="primary" onClick={handleClickOpen}>Sign in</Button>
         </NavItem>
       </Navbar>
-      <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title">Sign in</DialogTitle>
+      <Dialog open={open}  onClose={handleClose} aria-labelledby="form-dialog-title">
+        <DialogTitle id="form-dialog-title" 
+        style={
+          {
+           backgroundColor:"rgb(28 28 224)",
+           color:"white" 
+          }}
+        >
+          <h3><b>Sign in</b></h3>
+        </DialogTitle>
         <DialogContent>
           <TextField
             autoFocus
