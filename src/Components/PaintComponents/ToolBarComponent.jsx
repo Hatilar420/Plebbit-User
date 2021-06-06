@@ -4,8 +4,8 @@ export default function ToolBarComponent({changeColor,Changestroke,ClearCanvas})
 
       const [background, setbackground] = useState("#000")
       const [ShowColorPicker,hidePicker] = useState(false)
-      const [strokeSize,SetStrokeSize] = useState(1)
-      let stroke
+      const [strokeSize,SetStrokeSize] = useState(5)
+      //let stroke
       const ShowColorPickerOnClick = (event) =>{
         if(ShowColorPicker){
           console.log("click")
@@ -30,39 +30,41 @@ export default function ToolBarComponent({changeColor,Changestroke,ClearCanvas})
       }
     
     return (
-        <div className="container-fluid p-2" style={{border:"1px solid black",height:"100%"}}>
+        <div className="container-fluid p-1" style={{borderBottom:"1px solid black",width:"100%",height:"100%"}}>
           <div className="row p-0 m-0" style={{width:"100%",height:"100%"}}>
-          <div className="row justify-content-center align-items-center p-0 m-0 col-3" style={{height:"100%"}}>
-                <div className="col-5" style={{height:"100%"}}>
-                  color
+          <div className="col-3 pb-2" style={{height:"100%"}}>
+                <div style={{textAlign:"center",fontSize:"0.8rem"}}>
+                  Color
                 </div>
-                <div onClick={ShowColorPickerOnClick} className="col-7" style={{ height:"100%",backgroundColor:background}}>
-                {ShowColorPicker ? <div style={{position:"absolute"}}>
-                  <ChromePicker
-                    color={ background }
-                    onChange={ handleChangeComplete }/>
-                </div> : null} 
+                <div style={{height:"60%", position:"relative"}}>
+                  <div onClick={ShowColorPickerOnClick} style={{ height:"100%",backgroundColor:background}}>
+                  {ShowColorPicker ? <div style={{position:"absolute"}}>
+                    <ChromePicker
+                      color={ background }
+                      onChange={ handleChangeComplete }/>
+                  </div> : null} 
+                  </div>
                 </div>
             </div>
             <div className="col-5 row justify-content-center align-items-center p-0 m-0" style={{height:"100%"}}>
-              <div className="col-6">
-                <label>Stroke size</label>
-                <input type="range" onChange={HandleStrokeSizeChange} min="1" className="form-range" max="25"/>
+              <div className="col-7">
+                <label style={{fontSize:"0.8rem"}}>Stroke size</label>
+                <input type="range" onChange={HandleStrokeSizeChange} min="1" value={strokeSize} className="form-range" max="25"/>
               </div>
-              <div className="col-4 d-flex justify-content-center align-items-center" style={{border:"1px solid black",height:"100%"}} >
+              <div className="col-5 mb-1 d-flex justify-content-center align-items-center" style={{border:"1px solid black",height:"100%"}} >
                       <div className="rounded-circle" style={{height:`${strokeSize}px`,width:`${strokeSize}px`,backgroundColor:background}}>
                       </div>
               </div>
             </div>
-            <div className="col row align-items-center m-0 p-0">
-                  <div className="col row m-0 p-0 justify-content-center align-items-center" style={{height:"100%"}}>
+            <div style={{height:"100%"}} className="col-4 row justify-content-center align-items-center m-0 p-0">
+                  <div className="col-6 row p-0 justify-content-center align-items-center" style={{height:"100%"}}>
                       <div>
-                        <button onClick={ActivateEraser} type="button" class="btn btn-primary">Eraser</button>
+                        <button onClick={ActivateEraser} style={{fontSize:"0.8rem"}} type="button" class="btn btn-primary">Eraser</button>
                       </div>
                   </div>
-                  <div className="col row m-0 p-0 justify-content-center align-items-center" style={{height:"100%"}}>
+                  <div className="col-6 row p-0 justify-content-center align-items-center" style={{height:"100%"}}>
                       <div>
-                        <button onClick={ (event) => ClearCanvas()} type="button" class="btn btn-primary">clear</button>
+                        <button style={{fontSize:"0.8rem"}} onClick={ (event) => ClearCanvas()} type="button" class="btn btn-primary">clear</button>
                       </div>
                   </div>
             </div>

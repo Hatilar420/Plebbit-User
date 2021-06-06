@@ -1,6 +1,7 @@
-import {React,useRef,useEffect, useState} from 'react'
+import {React,useRef,useEffect} from 'react'
 import ToolBarComponent from './ToolBarComponent'
-
+import TextComponent from './TextComponent'
+import ParticipantComponent from './ParticipantComponent'
 
 export default function PaintComponent() {
     useEffect(() => {
@@ -71,18 +72,21 @@ export default function PaintComponent() {
         //console.log(mousepos)        
     }
     return (
-        <div className="container-fluid" style={{height:"100%",backgroundColor:"white"}}>
-            <div className="row" id="Board" >
-                <div style={{border:"1px solid red",height:"85vh"}}  className="col-7 p-0">
-                <div className="p-0" style={{border:"1px solid pink",height:"10vh"}}>
+        <div className="container-fluid p-1" style={{height:"100%",backgroundColor:"#282c34"}}>
+            <div className="row m-0 p-0 space-between" id="Board" >
+                <div style={{height:"85vh"}} className="col-2">
+                    <ParticipantComponent/>
+                </div>
+                <div style={{height:"85vh"}}  className="col-5 p-1">
+                <div className="p-0 card" style={{backgroundColor:"white",height:"10vh",width:"100%"}}>
                         <ToolBarComponent ClearCanvas={ClearCanvas} changeColor={ChangeColorStroke} Changestroke={ChangeStrokeSize}/>
                 </div>
-                    <div ref={DrawingBoardRef} className="p-0" style={{border:"1px solid green",height:"75vh"}}>
+                    <div ref={DrawingBoardRef} className="p-0" style={{backgroundColor:"white",height:"74vh"}}>
                         <canvas ref={CanvasRef} onMouseUp={CaptureMouseUp} onMouseMove={onMouseMoveCanvas} onMouseDown={CaptureMouseDown}></canvas>
                     </div>                                
                 </div>
-                <div style={{border:"1px solid black",height:"85vh"}} className="col-5">
-                    bye!
+                <div style={{height:"85vh"}} className="col-5 p-1">
+                    <TextComponent/>
                 </div>
             </div>
         </div>
