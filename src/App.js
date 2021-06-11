@@ -4,6 +4,8 @@ import HeaderComponent from './Components/HeaderComponent';
 import LandingComponent from './Components/LandingComponent';
 import FrontPageComponent from './Components/FrontPageComponents/FrontPageComponent';
 import PaintComponent from './Components/PaintComponents/PaintComponent';
+import ProtectedRoute from './Components/ProtectedComponent/ProtectedRoute';
+import NotAuth from './Components/ServiceComponents/NotAuth';
 
 function App() {
   return (
@@ -14,9 +16,12 @@ function App() {
           </div>
           <div className="container-fluid backgroundBlack">
             <Switch>
-                <Route exact path="/" component={FrontPageComponent}/>
-                <Route exact path="/Landing" component={LandingComponent}/>
+                <Route exact path="/" component={LandingComponent}/>
+                <ProtectedRoute exact path="/profile">
+                  <FrontPageComponent/>
+                </ProtectedRoute>
                 <Route exact path="/paint" component={PaintComponent}/>
+                <Route exact path="/NotAuth" component={NotAuth}/>
             </Switch>
           </div>
       </div>

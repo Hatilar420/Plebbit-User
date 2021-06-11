@@ -2,7 +2,7 @@
 class LogInHelper {
         constructor(){
             this.token = null
-            this.IsLogIn = flase
+            this.IsLogIn = false
         }
 }
 

@@ -9,6 +9,7 @@ import IconButton from '@material-ui/core/IconButton';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
 import FullScreenDialog from './FullScreenDialog';
+import UserProfilePreview from './UserProfilePreview';
 export default function FrontPageComponent() {
 
     const [PostState, setPostState] = useState([{
@@ -20,6 +21,30 @@ export default function FrontPageComponent() {
         DialogOpen:false
     },{
         id:2134,
+        Title :"First Content",
+        Content :"This is a temp content , Lorem ipsum",
+        ImageUrl: "https://miro.medium.com/max/4038/1*KoZPn1bF5q29om6skmeENg.png",
+        isLiked:false,
+        DialogOpen:false
+    },
+    {
+        id:124,
+        Title :"First Content",
+        Content :"This is a temp content , Lorem ipsum",
+        ImageUrl: "https://miro.medium.com/max/4038/1*KoZPn1bF5q29om6skmeENg.png",
+        isLiked:false,
+        DialogOpen:false
+    },
+    {
+        id:124,
+        Title :"First Content",
+        Content :"This is a temp content , Lorem ipsum",
+        ImageUrl: "https://miro.medium.com/max/4038/1*KoZPn1bF5q29om6skmeENg.png",
+        isLiked:false,
+        DialogOpen:false
+    },
+    {
+        id:124,
         Title :"First Content",
         Content :"This is a temp content , Lorem ipsum",
         ImageUrl: "https://miro.medium.com/max/4038/1*KoZPn1bF5q29om6skmeENg.png",
@@ -100,14 +125,18 @@ export default function FrontPageComponent() {
     return (
         <div className="container-fluid p-0">
             <div className="row">
+                <div className="mt-4" style={{height:"25vh"}}>
+                    <UserProfilePreview/>
+                </div>
                 <div>
-                    <div>
-                        <h1>Posts</h1>
+                    <div className="card mt-2 mb-4" style={{borderRadius:"10px",backgroundColor:"#411969"}}>
+                    <div className="card-body">
+                        <div style={{color:"white"}}><h1> My Posts</h1></div>
                     </div>
-                    <div className="row">
+                    <div className="row card-body">
                         {MapPostState()}
                     </div>
-                    
+                    </div>
                 </div>   
             </div>
         </div>
