@@ -6,8 +6,12 @@ class RouteList {
     LoginRoute = this.BASE + "/login"
 
     //Post Controller Routes
-    PostBase = this.BASE + '/post'
+    PostBase = this.BASE + '/post/'
     GetUserPosts = this.PostBase + '/user'
+    PostGroupPosts = this.PostBase+'g/'
+    returnGroupPosts = (gid) =>{
+        return `${this.PostGroupPosts}${gid}`
+    }
 
     //User Controller routes
     UserBase  = this.BASE + '/user/'
@@ -15,9 +19,14 @@ class RouteList {
 
     //Group Controller routes
     GroupBase =  this.BASE + '/group/'
+    GroupUserBase = this.GroupBase + '/users/'
 
     returnGetGroupById = (gid) =>{
         return `${this.GroupBase}${gid}`
+    }
+
+    returnGetUsersByGroup = (gid) =>{
+        return `${this.GroupUserBase}${gid}`
     }
 
 }

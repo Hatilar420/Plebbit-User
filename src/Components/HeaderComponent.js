@@ -23,7 +23,7 @@ import {
   import DialogTitle from '@material-ui/core/DialogTitle';
   import ApiList from '../HelperServices/API/ApiList';
   import LoginUtil from '../HelperServices/LogInHelper';
-  import { useHistory } from "react-router-dom";
+  import { useHistory , Link } from "react-router-dom";
 
 
 
@@ -99,6 +99,9 @@ export default function HeaderComponent() {
             </NavItem>
             <NavItem>
               <NavLink href="/profile">Profile</NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink><Link to="/group/60c14e07e05eff3ab4b5959b" style={{color:"rgba(255, 255, 255, 0.55)"}}> Group </Link></NavLink>
             </NavItem>
             <UncontrolledDropdown nav inNavbar>
               <DropdownToggle nav caret>
