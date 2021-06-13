@@ -1,12 +1,15 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import LoginUtil from '../../HelperServices/LogInHelper'
+import ApiList from '../../HelperServices/API/ApiList'
+export default function UserProfilePreview({User,Posts}) {
 
-export default function UserProfilePreview() {
+    useEffect(() => {
+        User.Posts = Posts.length
+        console.log(User)
+    }, [])
 
-    const [userProfileState , SetUserProfileState] = useState({
-        Name:"Akash", 
-        url:"https://pickaface.net/gallery/avatar/unr_random_180527_1151_2bcb7h9.png",
-        Posts:2
-    })
+  
+    const [userProfileState , SetUserProfileState] = useState(User)
 
 
 
@@ -14,8 +17,8 @@ export default function UserProfilePreview() {
         <div className="container-fluid p-1 card m-0" style={{height:"100%",borderRadius:"10px",backgroundColor:"rgb(23 60 134)"}}>
             <div className="row card-body" style={{height:"100%"}}>
                 <div className="col-2" style = {{height:"100%",textAlign:"center",color:"white"}}>
-                    <img src={userProfileState.url} alt="Name" className="rounded-circle mb-2" style={{width:"55%",height:"85%"}} />
-                    <h5> {userProfileState.Name} </h5>
+                    <img src={ApiList.BASE+userProfileState.Avatar} alt="Name" className="rounded-circle mb-2" style={{width:"55%",height:"85%"}} />
+                    <h5> {userProfileState.Username} </h5>
                 </div>
                 <div className="col row p-2" style={{height:"100%"}}>
                     <div className="row col-12" style={{color:"white"}}>
