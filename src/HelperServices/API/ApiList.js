@@ -9,6 +9,7 @@ class RouteList {
     PostBase = this.BASE + '/post/'
     GetUserPosts = this.PostBase + '/user'
     PostGroupPosts = this.PostBase+'g/'
+    PostContent = this.PostBase + 'p/'
     returnGroupPosts = (gid) =>{
         return `${this.PostGroupPosts}${gid}`
     }

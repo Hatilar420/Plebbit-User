@@ -4,6 +4,7 @@ import ApiList from '../../HelperServices/API/ApiList'
 import LoginUtil from '../../HelperServices/LogInHelper'
 import GroupPost from './GroupPost'
 import { Link } from 'react-router-dom'
+import PostInput from '../PostInputComponents/PostInput'
 export default function GroupLanding() {
     const {id} = useParams()
 
@@ -86,6 +87,11 @@ export default function GroupLanding() {
 
     }
 
+    const CallBackPostSuccess = (data) =>{
+        console.log(data)
+        getGroupPostsByRoute(setPostGroups)
+    }
+
     return IsGroupLoaded && IsPostsLoaded && IsGroupUserLoaded ?   (
         <div className="container-fluid">
             <div className="p-2" style={{color:"wheat"}}>
@@ -101,6 +107,11 @@ export default function GroupLanding() {
                 </div>
                 <div className="col">
 
+                </div>
+            </div>
+            <div className="row justify-content-center">
+                <div className="col-10 p-0">
+                    <PostInput cb={CallBackPostSuccess} Group={GroupState}/>                                    
                 </div>
             </div>
             <div className="row justify-content-center">
