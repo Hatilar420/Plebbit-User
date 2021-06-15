@@ -98,10 +98,7 @@ export default function HeaderComponent() {
               <NavLink href="/paint">Paint</NavLink>
             </NavItem>
             <NavItem>
-              <NavLink href="/profile">Profile</NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink><Link to="/group/60c14e07e05eff3ab4b5959b" style={{color:"rgba(255, 255, 255, 0.55)"}}> Group </Link></NavLink>
+              <Link to="/profile" style={{textDecoration:"none"}}><NavLink>Profile</NavLink></Link>
             </NavItem>
             <UncontrolledDropdown nav inNavbar>
               <DropdownToggle nav caret>

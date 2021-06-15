@@ -23,7 +23,7 @@ export default function FrontPageComponent() {
 
 
     const [UserState, setUserState] = useState({})
-    const [UserGroupState, setUserGroupState] = useState({})
+    const [UserGroupState, setUserGroupState] = useState(null)
     const [IsUserLoaded, setIsUserLoaded] = useState(false)
     const [IsPostLoaded, setIsPostLoaded] = useState(false)
     const [IsGroupLoaded, setIsGroupLoaded] = useState(false)
@@ -79,7 +79,7 @@ export default function FrontPageComponent() {
     const setUser = (data) =>{
         data.Points =  1200 //Temporary
         data.Achievements = 8 //Temporary
-        //console.log(data)
+        console.log(data)
         setUserState(data)
         setIsUserLoaded(true)
     }
@@ -163,14 +163,14 @@ export default function FrontPageComponent() {
         return PostState.map( (x,index) => <div key={x._id} className="col-3">{RenderCard(x,index)}</div>  )
     }
 
-    return (
+    return IsPostLoaded && IsUserLoaded && IsGroupLoaded ?  (
         <div className="container-fluid p-0">
             <div className="row">
                 <div className="mt-4" style={{height:"25vh"}}>
-                    {IsUserLoaded && IsPostLoaded ? <UserProfilePreview User={UserState} Posts={PostState} /> : null  }
+                     <UserProfilePreview User={UserState} Posts={PostState} />
                 </div>
                 <div className="mt-4" style={{height:"25vh",border:"1px solid white"}}>
-                    {IsUserLoaded && IsPostLoaded && IsGroupLoaded ? <GroupPreview/> : null  }
+                     <GroupPreview Groups={[UserGroupState]} />
                 </div>
                 <div>
                     <div className="card mt-2 mb-4" style={{borderRadius:"10px",backgroundColor:"#411969"}}>
@@ -184,5 +184,5 @@ export default function FrontPageComponent() {
                 </div>   
             </div>
         </div>
-    )
+    ) : null
 }

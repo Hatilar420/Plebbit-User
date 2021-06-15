@@ -15,7 +15,9 @@ class RouteList {
 
     //User Controller routes
     UserBase  = this.BASE + '/user/'
-
+    returnUserById = (uid) =>{
+        return `${this.UserBase}${uid}`
+    }
 
     //Group Controller routes
     GroupBase =  this.BASE + '/group/'

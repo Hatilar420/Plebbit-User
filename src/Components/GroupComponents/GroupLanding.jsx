@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import ApiList from '../../HelperServices/API/ApiList'
 import LoginUtil from '../../HelperServices/LogInHelper'
+import GroupPost from './GroupPost'
+import { Link } from 'react-router-dom'
 export default function GroupLanding() {
     const {id} = useParams()
 
@@ -11,7 +13,12 @@ export default function GroupLanding() {
         getGroupPostsByRoute(setPostGroups)
     }, [])
 
-
+    const [PostsState, setPostsState] = useState(null)
+    const [IsPostsLoaded, setIsPostsLoaded] = useState(false)
+    const [GroupUsersState, setGroupUsersState] = useState(null)
+    const [IsGroupUserLoaded, setIsGroupUserLoaded] = useState(false)
+    const [GroupState, setGroupState] = useState(null)
+    const [IsGroupLoaded, setIsGroupLoaded] = useState(false)
     const getGroupByRoute = (cb) =>{
         let axios = require('axios').default
         axios.get(ApiList.returnGetGroupById(id) ,{
@@ -53,18 +60,38 @@ export default function GroupLanding() {
 
     const setGroupByRoute = (data) => {
         console.log(data)
+        setGroupState(data)
+        setIsGroupLoaded(true)
     }
 
     const setGroupUsers = (data) =>{
         console.log(data)
+        setGroupUsersState(data)
+        setIsGroupUserLoaded(true)
     }
 
     const setPostGroups = (data) =>{
         console.log(data)
+        setPostsState(data)
+        setIsPostsLoaded(true)
     }
 
-    return (
+    const MapGroupPosts = () =>{
+
+        let temp =  PostsState.map( x => {
+            console.log(x)
+            return (<GroupPost key={x._id} Post={x} />) 
+        } )
+        return temp
+
+    }
+
+    return IsGroupLoaded && IsPostsLoaded && IsGroupUserLoaded ?   (
         <div className="container-fluid">
+            <div className="p-2" style={{color:"wheat"}}>
+                <h1>{GroupState.Name}</h1>
+                <Link to={`/paint/${GroupState._id}`} > Go to Paint </Link>
+            </div>
             <div className="row">
                 <div className="col">
 
@@ -77,8 +104,10 @@ export default function GroupLanding() {
                 </div>
             </div>
             <div className="row justify-content-center">
-                                
+                <div className="col-10">
+                    {IsPostsLoaded && IsGroupUserLoaded && IsGroupLoaded ? MapGroupPosts()  : null}
+                </div>                                
             </div>
         </div>
-    )
+    ) : null
 }
