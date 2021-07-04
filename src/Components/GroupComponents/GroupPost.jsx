@@ -54,7 +54,7 @@ export default function GroupPost({Post}) {
         setPointState(-1)
     }
     return (
-        <div className="row container p-0 m-3 pt-2 postStyles" style={{color:"white",backgroundColor:"rgb(29 29 41)"}}>
+        <div className="row p-0 m-3 pt-2 postStyles" style={{color:"white",backgroundColor:"rgb(29 29 41)"}}>
             <div className="col-1" style={{textAlign:"center"}}>
                 <div ref={UpArrowRef}>
                     <BsArrowUp onClick={onUpArrowClick}  style={{fontSize:"2rem"}}/> 
@@ -76,7 +76,7 @@ export default function GroupPost({Post}) {
                         <p style={{fontSize:"1.5rem"}}>{Post.Title}</p>
                     </div>
                     <div className="row p-2 justify-content-center align-items-center">
-                        <img className="col-12" src={ApiList.BASE+Post.imageUrl} style={{height:"100%"}} alt="meme" />
+                        <img src={ApiList.BASE+Post.imageUrl} style={{maxHeight:"70vh",maxWidth:"50vw"}} alt="meme" />
                     </div>
                 </div>
             </div>

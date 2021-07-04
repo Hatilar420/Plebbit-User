@@ -7,7 +7,6 @@ export default function GroupPreview({Groups}) {
 
     const renderGroupCards = () =>{
         return Groups.map(x => <RenderGroupCard key={x._id} data={x.GroupId}/> )
-        //console.log(Groups)
     }
 
     const CardRedirectOnClick = (id) =>{

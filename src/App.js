@@ -7,7 +7,7 @@ import PaintComponent from './Components/PaintComponents/PaintComponent';
 import ProtectedRoute from './Components/ProtectedComponent/ProtectedRoute';
 import NotAuth from './Components/ServiceComponents/NotAuth';
 import GroupLanding from './Components/GroupComponents/GroupLanding';
-
+import SignUpComponent from './Components/ServiceComponents/SignUpComponent';
 function App() {
   return (
     <Router>
@@ -21,9 +21,10 @@ function App() {
                 <ProtectedRoute exact path="/profile">
                   <FrontPageComponent/>
                 </ProtectedRoute>
-                <Route exact path="/paint" component={PaintComponent}/>
+                <Route exact path="/paint/:id" component={PaintComponent}/>
                 <Route exact path="/NotAuth" component={NotAuth}/>
                 <Route path="/group/:id" component={GroupLanding}/>
+                <Route path="/signUp" component={SignUpComponent}/> 
             </Switch>
           </div>
       </div>

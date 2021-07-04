@@ -66,20 +66,18 @@ export default function PostInput({Group,cb}) {
     }
 
     return (
-        <div className="container-fluid m-0 p-1" style={{border:"1px solid white",height:"100%"}}>
-            <div style={{color:"white",fontSize:"1.5rem"}}>
-                Post Something
+        <div className="container-fluid m-0 p-3" style={{border:"1px solid #ffffff29",borderRadius:"10px",backgroundColor:"#151925ba",height:"100%"}}>
+            <div style={{color:"white",fontSize:"2rem"}}>
+                Post
             </div>
-            <div className="m-2">
-            <label style={{color:"white"}}>Title:</label>
-            <input onChange={PostTitleOnChange} type="text" value={PostState.Title} placeholder="Post title" style={{width:"100%"}} />
+            <div className="mb-2 mt-2">
+                <input onChange={PostTitleOnChange} type="text" placeholder="Title" style={{width:"100%",backgroundColor:"inherit",border:"1px solid #ffffff29",color:"white"}} />
             </div>
-            <div className="m-2">
-                <label style={{color:"white"}}>Content</label>
-                <textarea placeholder="type something" onChange={PostContentOnChange} value={PostState.Content} style={{width:"100%"}}></textarea>
+            <div className="mb-2" style={{height:"15vh"}}>
+                <textarea placeholder="Content" onChange={PostContentOnChange} style={{width:"100%",backgroundColor:"inherit",height:"100%",border:"1px solid #ffffff29",color:"white"}}></textarea>
             </div>
-            <div className="row m-2" style={{width:"50%",border:"1px solid red"}}>
-                <div className="col-4">
+            <div className="row m-0" style={{width:"50%"}}>
+                <div className="col-4 m-0 p-0">
                     <input type="file" onChange={ListenToImageChange}  id="file" style={{opacity:0, width:"0.1px" , height:"0.1px",position:"absolute"}} />
                     <label for="file" className="btn btn-secondary"> <BsFillImageFill/> Select file</label>
                 </div>

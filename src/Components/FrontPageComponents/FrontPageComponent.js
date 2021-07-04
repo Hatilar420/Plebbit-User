@@ -1,4 +1,4 @@
-import React , {useEffect, useState} from 'react'
+import React , {useEffect,useReducer} from 'react'
 import Card from '@material-ui/core/Card';
 import '../../Styles/FrontPageComponentStyle.css'
 import CardContent from '@material-ui/core/CardContent'
@@ -13,6 +13,7 @@ import UserProfilePreview from './UserProfilePreview';
 import ApiList from '../../HelperServices/API/ApiList';
 import LoginUtil from '../../HelperServices/LogInHelper';
 import GroupPreview from './GroupPreview';
+import { genralReducer, genralState, setGenralSuccess } from './Reducers/genralReducer';
 export default function FrontPageComponent() {
 
     useEffect(  () => {
@@ -22,11 +23,9 @@ export default function FrontPageComponent() {
     } , [])
 
 
-    const [UserState, setUserState] = useState({})
-    const [UserGroupState, setUserGroupState] = useState(null)
-    const [IsUserLoaded, setIsUserLoaded] = useState(false)
-    const [IsPostLoaded, setIsPostLoaded] = useState(false)
-    const [IsGroupLoaded, setIsGroupLoaded] = useState(false)
+    const [UserState, UserStateDispatch] = useReducer(genralReducer,genralState)
+    const [UserGropState, UserGroupDispatch] = useReducer(genralReducer, genralState)
+    const [PostState, PostStateDispatch] = useReducer(genralReducer,genralState)
     const GetUserPosts = (cb) =>{
         let axios = require('axios').default
         axios.get(ApiList.GetUserPosts,{
@@ -34,9 +33,7 @@ export default function FrontPageComponent() {
                 "Authorization" : "Bearer " + LoginUtil.token 
             }
         }).then( (response) =>{
-            response.data.forEach(element => {
-                cb(element)
-            });
+                cb(response.data)
         } ).catch( (error) => {
             console.log(error)
         } )
@@ -49,9 +46,7 @@ export default function FrontPageComponent() {
                 "Authorization" : "Bearer " + LoginUtil.token 
             }
         }).then( (response) =>{
-            response.data.forEach(element => {
-                cb(element)
-            });
+                cb(response.data)
         } ).catch( (error) => {
             console.log(error)
         } )
@@ -72,42 +67,36 @@ export default function FrontPageComponent() {
 
     const setUserGroups = (data) =>{
         console.log(data)
-        setUserGroupState(data)
-        setIsGroupLoaded(true)
+        UserGroupDispatch(setGenralSuccess(data))
     }
 
     const setUser = (data) =>{
         data.Points =  1200 //Temporary
         data.Achievements = 8 //Temporary
         console.log(data)
-        setUserState(data)
-        setIsUserLoaded(true)
+        UserStateDispatch(setGenralSuccess(data))
     }
 
     const setPost = (data) =>{
         data.isLiked = false
         data.DialogOpen =  false
         console.log(data)
-        PostState.push(data)
-        setPostState([...PostState])
-        setIsPostLoaded(true)
+        PostStateDispatch(setGenralSuccess(data))
     }
-
-    const [PostState, setPostState] = useState([]);
 
 
     const ShowFullWidthDialog = (post,index)=>{
         post.DialogOpen = true;
-        PostState[index] = post
-        setPostState([...PostState])
-        console.log(PostState[index])
+        PostState.data[index] = post
+        PostStateDispatch(setGenralSuccess(PostState.data))
+        console.log(PostState.data[index])
     }
 
     const CloseFullWidthDialog = (post,index) =>{
         post.DialogOpen = false;
-        PostState[index] = post
-        setPostState([...PostState])
-        console.log(PostState[index])
+        PostState.data[index] = post
+        PostStateDispatch(setGenralSuccess(PostState.data))
+        console.log(PostState.data[index])
     }
 
     const ShowContentOnHover = (ref) =>{
@@ -126,8 +115,8 @@ export default function FrontPageComponent() {
             event.target.style.color = "white"
             post.isLiked = false
         }
-        PostState[index] = post
-        setPostState(PostState)
+        PostState.data[index] = post
+        PostStateDispatch(setGenralSuccess(PostState.data))
     }
     
     const RenderCard = (post,index) =>{
@@ -160,29 +149,30 @@ export default function FrontPageComponent() {
 
 
     const MapPostState = () =>{
-        return PostState.map( (x,index) => <div key={x._id} className="col-3">{RenderCard(x,index)}</div>  )
+        console.log(PostState)
+        return PostState.data.map( (x,index) => <div key={x._id} className="col-3">{RenderCard(x,index)}</div>  )
     }
 
-    return IsPostLoaded && IsUserLoaded && IsGroupLoaded ?  (
+    return (
         <div className="container-fluid p-0">
             <div className="row">
-                <div className="mt-4" style={{height:"25vh"}}>
-                     <UserProfilePreview User={UserState} Posts={PostState} />
-                </div>
-                <div className="mt-4" style={{height:"25vh",border:"1px solid white"}}>
-                     <GroupPreview Groups={[UserGroupState]} />
-                </div>
+                {!UserState.isLoading ?  (<div className="mt-4" style={{height:"25vh"}}>
+                     <UserProfilePreview User={UserState.data} Posts={PostState} />
+                </div>) : null  }
+                {!UserGropState.isLoading ? <div className="mt-4" style={{height:"25vh",border:"1px solid white"}}>
+                     <GroupPreview Groups={UserGropState.data} />
+                </div> : null }
                 <div>
                     <div className="card mt-2 mb-4" style={{borderRadius:"10px",backgroundColor:"#411969"}}>
                     <div className="card-body">
                         <div style={{color:"white"}}><h1> My Posts</h1></div>
                     </div>
                     <div className="row card-body">
-                        {IsPostLoaded ?  MapPostState() : null}
+                        {!PostState.isLoading ?  MapPostState() : null}
                     </div>
                     </div>
-                </div>   
+                </div> 
             </div>
         </div>
-    ) : null
+    ) 
 }

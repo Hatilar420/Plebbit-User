@@ -59,6 +59,10 @@ export default function HeaderComponent() {
       history.push('/')
     }
 
+    const handleRedirectSignUp =  (event) =>  {
+          history.push("/signUp")
+    }
+
     const handleUserPassword = (event) =>{
         credentials.Password = event.target.value
 
@@ -120,7 +124,10 @@ export default function HeaderComponent() {
           </Nav>
         </Collapse>
         <NavItem>
-          { !LoginUtil.IsLogIn ?  <Button color="primary" onClick={handleClickOpen}>Sign in</Button> : <Button color="danger" onClick={Signout}>Sign out</Button> }
+            <Button color="success" onClick={handleRedirectSignUp}>Sign Up</Button>
+        </NavItem>
+        <NavItem>
+          { IsLogedIn ? <Button color="danger" onClick={Signout}>Sign out</Button> : <Button color="primary" onClick={handleClickOpen}>Sign in</Button> }
         </NavItem>
       </Navbar>
       <Dialog open={open}  onClose={handleClose} aria-labelledby="form-dialog-title">

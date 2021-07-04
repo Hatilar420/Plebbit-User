@@ -4,6 +4,7 @@ class RouteList {
     BASE = "http://localhost:8080"
 
     LoginRoute = this.BASE + "/login"
+    RegisterRoute = this.BASE + "/register"
 
     //Post Controller Routes
     PostBase = this.BASE + '/post/'
@@ -23,6 +24,7 @@ class RouteList {
     //Group Controller routes
     GroupBase =  this.BASE + '/group/'
     GroupUserBase = this.GroupBase + '/users/'
+    GroupGameBase = this.GroupBase + 'game/'
 
     returnGetGroupById = (gid) =>{
         return `${this.GroupBase}${gid}`
