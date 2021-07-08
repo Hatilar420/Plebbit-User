@@ -1,13 +1,44 @@
-import React, { useState , useRef } from 'react'
-
+import React, { useState , useRef,useContext,useEffect } from 'react'
+import { PaintContext } from './PaintHigherComponent'
+import socket from '../../HelperServices/SocketHelper'
+import ApiList from '../../HelperServices/API/ApiList'
+import LoginUtil from '../../HelperServices/LogInHelper'
+import TimerComponent from './TimerComponent'
 
 export default function TextComponent() {
 
-    const [Message,setMessage] = useState([])
+    useEffect(() => {
+        socket.on("message" , (obj) =>{
+            //console.log(obj.message)
+            PushMessage(obj.message)
+        })
+        getUser(setUser)   
+    }, [])
 
+    const {SendMessage} = useContext(PaintContext)
+    const [Message,setMessage] = useState([])
+    const [UserState,setUserState] = useState(null)
     const TextRef = useRef(null)
     const MessageBoxRef = useRef(null)    
 
+
+    const getUser = (cb) =>{
+        let axios = require('axios').default
+        axios.get(ApiList.UserBase,{
+            headers: {
+                "Authorization" : "Bearer " + LoginUtil.token 
+            }
+        }).then( (response) =>{
+            cb(response.data)
+        } ).catch( (error) => {
+            console.log(error)
+        } )
+    }
+
+    const setUser = (data) =>{
+        console.log(data)
+        setUserState(data)
+    }
 
     const OnEnterPress = (event) =>{
         if(event.key === 'Enter'){
@@ -35,16 +66,17 @@ export default function TextComponent() {
         let obj = {
             Text : TextRef.current.value,
             Time : Date.now(),
-            User : { Name : "Akash" }
+            User : UserState
         }
         TextRef.current.value = ""
         console.log(obj)
-        PushMessage(obj)
-        console.log(MessageBoxRef.current)
+        SendMessage(obj)
+        //PushMessage(obj)
+        //console.log(MessageBoxRef.current)
         //Send message through webSockets
     }
 
-    const MessageBlock = (userName, Message , TimeStamp ) =>{
+    const MessageBlock = ({userName, Message , TimeStamp}) =>{
                 let t = new Date(TimeStamp)
 
                 return(
@@ -60,11 +92,14 @@ export default function TextComponent() {
     }
 
     const RenderMessage = () =>{
-        return Message.map( x => MessageBlock(x.User.Name,x.Text,x.Time) )
+        return Message.map( x => <MessageBlock userName={x.User.Username} Message={x.Text} TimeStamp={x.Time} />)
     }
 
     return (
         <div className="container-fluid card m-0 p-2" style={{color:"white",height:"100%",backgroundColor:"rgb(47 56 72)"}}>
+            <div>
+                <TimerComponent/>
+            </div>
             <div ref={MessageBoxRef} className="container-fluid" style={{height:"90%",overflowX:"hidden",overflowY:"auto"}}>
                 <RenderMessage/>
             </div>

@@ -5,7 +5,6 @@ import LoginUtil from '../../HelperServices/LogInHelper'
 import GroupPost from './GroupPost'
 import { Link } from 'react-router-dom'
 import PostInput from '../PostInputComponents/PostInput'
-import socket from '../../HelperServices/SocketHelper'
 import { BsFillPlusCircleFill } from "react-icons/bs";
 import {gameReducer,gameState,setGameSuccess,setGameError} from './Reducers/GameReducer'
 import { genralReducer , genralState, setGenralError , setGenralSuccess } from './Reducers/GenralReducer'
@@ -14,18 +13,15 @@ export default function GroupLanding() {
     const {id} = useParams()
     const history = useHistory()
     useEffect(() => {
+        getUser(setUser)
         getGroupByRoute(setGroupByRoute)
         getGroupUsersByRoute(setGroupUsers)
         getGroupPostsByRoute(setPostGroups)
         getGamesByGroupId()
-        socket.auth = {jwt : LoginUtil.token}
-        socket.connect()
-        socket.onAny((event , ...args) =>{
-            console.log(event,args)
-        })
-        console.log(socket)
     }, [])
 
+
+    const [UserState,userStateDispatch] = useReducer(genralReducer ,genralState)
     const [PostsState, PostDispatch] = useReducer(genralReducer, genralState)
     const [GameState, gameDispatch] = useReducer(gameReducer, gameState)
     const [GroupUsersState, GroupUsersDispatch] = useReducer(genralReducer,genralState)
@@ -44,7 +40,35 @@ export default function GroupLanding() {
             console.log(error)
         } )
     }
+
+    const getUser = (cb) =>{
+        let axios = require('axios').default
+        axios.get(ApiList.UserBase,{
+            headers: {
+                "Authorization" : "Bearer " + LoginUtil.token 
+            }
+        }).then( (response) =>{
+            cb(response.data)
+        } ).catch( (error) => {
+            userStateDispatch(setGenralError(error.response))
+            console.log(error)
+        } )
+    } 
+    const setUser = (data) =>{
+        console.log(data)
+        userStateDispatch(setGenralSuccess(data))
+    }
     
+
+    const returnClientUserMap = () =>{
+        for(var i of GroupUsersState.data){
+            if(i.UserId._id === UserState.data._id){
+                return i
+            }
+        }
+        return null
+    }
+
     const getGroupUsersByRoute = (cb) =>{
         let axios = require('axios').default
         axios.get(ApiList.returnGetUsersByGroup(id) ,{
@@ -154,7 +178,10 @@ export default function GroupLanding() {
     const GameLinks = ({data}) =>{
 
         return(
-            <div onClick={ (event) => history.push(`/paint/${data._id}`)  }>
+            <div onClick={ (event) => history.push({
+                pathname: `/paint/${data._id}`,
+                userMap : returnClientUserMap() 
+            })  }>
                 <div>
                     {data._id}
                 </div>
@@ -182,7 +209,7 @@ export default function GroupLanding() {
                         </div>
                     </div>
                     <div>
-                        {!GameState.isLoading ? MapGames(GameState.data) : <div> games are not loaded </div> }
+                        {!GameState.isLoading ?MapGames(GameState.data) : <div> games are not loaded </div> }
                     </div>
                 </div>
                 <div className="col-3 m-2" style={{backgroundColor:"white",minHeight:"40vh"}}>
