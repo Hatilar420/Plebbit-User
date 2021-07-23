@@ -9,7 +9,8 @@ export const PaintContext = createContext(null)
 export default function PaintHigherComponent() {
     const {id} = useParams()
     const {userMap} = useLocation()
-    let GameScoreId = null
+    let TempGameScoreId = null
+    const [GameScoreId, setGameScoreId] = useState(null)
     //let IsPlayerDrawing = false
     const [IsPlayerDrawing, setIsPlayerDrawing] = useState(false)
     useEffect(() => {
@@ -21,16 +22,29 @@ export default function PaintHigherComponent() {
         })
         
         socket.on("GameId", (obj) =>{
-            //setGameScoreId(obj)
-            GameScoreId = obj
+            console.log(obj)
+            TempGameScoreId = obj
+            setGameScoreId(
+                obj)
+            //GameScoreId = obj
         } )
 
         socket.on("turn", ({Gameid}) =>{
             console.log(Gameid)
-            if(Gameid == GameScoreId._id){
+            console.log(GameScoreId)
+            console.log(TempGameScoreId)
+            if(Gameid == TempGameScoreId._id){
                 console.log("My turn")
                 setIsPlayerDrawing(true)
-            }else{
+            }
+            else if( GameScoreId != null){
+                if(GameScoreId._id == Gameid)
+                {
+                    console.log("My turn")
+                    setIsPlayerDrawing(true)   
+                }
+            }
+            else{
                 setIsPlayerDrawing(false)
             }
         } )
