@@ -4,12 +4,13 @@ import TextComponent from './TextComponent'
 import ParticipantComponent from './ParticipantComponent'
 import socket from '../../HelperServices/SocketHelper'
 import { PaintContext } from './PaintHigherComponent'
+import './Styles/PaintComponentStyle.css'
 export default function PaintComponent() {
 
-    const {id,IsPlayerDrawing} =  useContext(PaintContext)
+    const {id,IsPlayerDrawing,Noun,Adjective,Animal,setIsPlayerDrawing,IsMyTurn,setIsMyTurn,UpdateWord} =  useContext(PaintContext)
     useEffect(() => {
         DrawCanvas()
-    }, [IsPlayerDrawing])
+    })
     const DrawingBoardRef = useRef(null)
     let firstTime = false
     let oldX
@@ -45,7 +46,7 @@ export default function PaintComponent() {
         CanvasRef.current.width = parseInt(DrawingWidth);
         CanvasRef.current.height = parseInt(DrawingHeight);
         ctx =  CanvasRef.current.getContext("2d")
-        ctx.lineWidth = 25;
+        ctx.lineWidth = 5;
         ctx.lineJoin = 'round';
         ctx.lineCap = 'round';
         ctx.strokeStyle = "#000";
@@ -107,23 +108,58 @@ export default function PaintComponent() {
         //setMousePos(mousepos)
         //console.log(mousepos)        
     }
+
+    const ClickChooseWord = (event) =>{
+        //console.log(event.target.innerHTML)
+        //Send the word to backend
+        UpdateWord(event.target.innerHTML)
+        setIsMyTurn(false)
+        setIsPlayerDrawing(true)
+    }
+
     return (
-        <div className="container-fluid p-1" style={{height:"100%",backgroundColor:"#282c34"}}>
+        <div className="container-fluid p-1" style={{height:"100%",backgroundColor:"#282c34"}}> 
             <div className="row m-0 p-0 space-between" id="Board" >
                 <div style={{height:"85vh"}} className="col-2">
                     <ParticipantComponent/>
                 </div>
                 <div style={{height:"85vh"}}  className="col-5 p-1">
-                <div className="p-0 card" style={{backgroundColor:"white",height:"10vh",width:"100%"}}>
-                    {IsPlayerDrawing ? (<ToolBarComponent ClearCanvas={ClearCanvas} changeColor={ChangeColorStroke} Changestroke={ChangeStrokeSize}/>)
-                    : <div>
-                        Someone else if drawing
-                    </div>}
-                </div>
-                    <div ref={DrawingBoardRef} className="p-0" style={{backgroundColor:"white",height:"74vh"}}>
-                        {IsPlayerDrawing ? (<canvas ref={CanvasRef} onMouseUp={CaptureMouseUp} onMouseMove={onMouseMoveCanvas} onMouseDown={CaptureMouseDown}></canvas>) : 
-                        <canvas ref={CanvasRef}></canvas>}
-                    </div>                                
+                    <div style={{position:"relative"}}>
+                        {IsMyTurn ? (
+                                <div style={{backgroundColor:"#000000c4",position:"absolute",zIndex:"2",height:"100%",width:"100%"}}>
+                                <div className="p-3" style={{height:"10%",width:"100%",color:"white",fontSize:"2rem",textAlign:"center"}}>
+                                    Choose a word
+                                </div>
+                                <div className="row justify-content-center align-items-center WordChooseStyleDiv">
+                                    <div className="col WordChoose">
+                                       <p onClick={ClickChooseWord}>
+                                           {Adjective}
+                                        </p>  
+                                    </div>
+                                    <div className="col WordChoose" >
+                                    <p onClick={ClickChooseWord}>
+                                           {Noun}
+                                        </p>
+                                    </div>
+                                    <div className="col WordChoose">
+                                    <p onClick={ClickChooseWord}>
+                                           {Animal}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        )  : null}
+                        <div className="p-0 card" style={{backgroundColor:"white",height:"10vh",width:"100%"}}>
+                            {IsPlayerDrawing ? (<ToolBarComponent ClearCanvas={ClearCanvas} changeColor={ChangeColorStroke} Changestroke={ChangeStrokeSize}/>)
+                            : <div>
+                                Someone else if drawing
+                            </div>}
+                        </div>
+                            <div ref={DrawingBoardRef} className="p-0" style={{backgroundColor:"white",height:"74vh"}}>
+                                {IsPlayerDrawing ? (<canvas ref={CanvasRef} onMouseUp={CaptureMouseUp} onMouseMove={onMouseMoveCanvas} onMouseDown={CaptureMouseDown}></canvas>) : 
+                                <canvas ref={CanvasRef}></canvas>}
+                            </div> 
+                    </div>                               
                 </div>
                 <div style={{height:"85vh"}} className="col-5 p-1">
                     <TextComponent/>

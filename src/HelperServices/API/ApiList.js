@@ -34,6 +34,13 @@ class RouteList {
         return `${this.GroupUserBase}${gid}`
     }
 
+    //Get Word APi call
+    GetWordBase = 'http://random-word-form.herokuapp.com/random'
+    GetAdjective = this.GetWordBase+'/adjective'
+    GetNoun = this.GetWordBase+'/noun'
+    GetAnimal = this.GetWordBase+'/animal'
+
+
 }
 
 const ApiList = new RouteList()
