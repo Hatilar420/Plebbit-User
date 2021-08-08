@@ -1,20 +1,22 @@
-import React, { useState } from 'react'
-
+import React, { useState,useContext } from 'react'
+import { PaintContext } from './PaintHigherComponent'
 
 export default function ParticipantComponent() {
 
-
-    const [scoreCardState, setScoreCardState] = useState([{
+    const {Players} = useContext(PaintContext)
+    /*const [scoreCardState, setScoreCardState] = useState([{
         User:{
             Name : "Akash",
             url : "https://miro.medium.com/max/2625/1*KoZPn1bF5q29om6skmeENg.png"
         },
         Score : 300
-    }])
+    }])*/
+
+
 
     //Call for some function to set ScoreCard
 
-    const RenderScoreCard = (User,Score) =>{
+    const RenderScoreCard = ({User,Score}) =>{
         return (
             <div className="row m-0 pt-1 mt-1" style={{height:"10vh",width:"100%"}}>
                     <div className="col-6">
@@ -33,8 +35,7 @@ export default function ParticipantComponent() {
 
     const RenderScoreCards = () =>{
 
-        return scoreCardState.map(x => RenderScoreCard(x.User,x.Score))
-
+        return Players.players.map(x => <RenderScoreCard key={x.User.id} User={x.User} Score={x.Score}/>)
     }
 
     return (
@@ -43,7 +44,7 @@ export default function ParticipantComponent() {
                 <h5>Participants</h5>
             </div>
             <div className="card-body m-1 p-0" style={{overflowY:"auto"}}>
-                {RenderScoreCards()}
+                { Players.IsLoaded ?  RenderScoreCards() : null}
             </div>      
         </div>
     )
