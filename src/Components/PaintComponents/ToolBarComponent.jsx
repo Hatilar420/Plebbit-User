@@ -21,7 +21,7 @@ export default function ToolBarComponent({changeColor,Changestroke,ClearCanvas})
         changeColor(color.hex)
       };
       const HandleStrokeSizeChange = (event) =>{
-        console.log(event.target.value)
+        //console.log(event.target.value)
         SetStrokeSize(event.target.value)
         Changestroke(event.target.value)
       }

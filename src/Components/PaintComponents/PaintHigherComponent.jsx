@@ -17,14 +17,19 @@ export default function PaintHigherComponent() {
     let TempGameScoreId = null
     const [GameScoreId, setGameScoreId] = useState(null)
     //let IsPlayerDrawing = false
-    const [IsPlayerDrawing, setIsPlayerDrawing] = useState(true)
-    useEffect(() => {
-        socket.auth = {jwt : LoginUtil.token}
-        socket.connect()
+    const [IsPlayerDrawing, setIsPlayerDrawing] = useState(false)
+    
+    useEffect(() =>{
         socket.emit("join" , {
             userMap,
             roomId : id
         })  
+    })
+
+
+    useEffect(() => {
+        socket.auth = {jwt : LoginUtil.token}
+        socket.connect()
         socket.on("GameId", (obj) =>{
             console.log(obj)
             TempGameScoreId = obj
@@ -32,6 +37,12 @@ export default function PaintHigherComponent() {
                 obj)
             //GameScoreId = obj
         } )
+
+
+        socket.on("GameOver",({Gameid}) =>{
+            console.log("Gameover", Gameid)
+            socket.disconnect()
+        })
 
         socket.on("turn", ({Gameid}) =>{
             /*console.log(Gameid)
