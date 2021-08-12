@@ -3,15 +3,37 @@ import { PaintContext } from './PaintHigherComponent'
 import socket from '../../HelperServices/SocketHelper'
 export default function TimerComponent() {
 
-    const {id,IsPlayerDrawing,setIsPlayerDrawing} =  useContext(PaintContext)
+    const {setIsPlayerDrawing} =  useContext(PaintContext)
     const [SecondsLeft, setSecondsLeft] = useState(60)
-    const [StartTimer , setStartTimer] = useState(false)
+    //const [StartTimer , setStartTimer] = useState(false)
     socket.on("timer" , ({timeLeft}) =>{
-        
-        setSecondsLeft(timeLeft)
+        if(timeLeft > 0)
+        {
+            setSecondsLeft(60-timeLeft)
+        }
+        else{
+            setIsPlayerDrawing(false)
+            setSecondsLeft(0)
+        }
+    })
+
+    socket.on("WordSelectTimer",({timeLeft}) =>{
+
+        if(timeLeft > 0)
+        {
+            setSecondsLeft(20-timeLeft)
+        }
+        else{
+            //setIsPlayerDrawing(false)
+            setSecondsLeft(0)
+            //setIsMyTurn(false)
+        }
 
     })
-    useEffect(() => {
+
+    //DEPRECIATED TIMER
+
+    /*useEffect(() => {
         if(IsPlayerDrawing && !StartTimer){
             reStartTimer()
         }
@@ -36,7 +58,7 @@ export default function TimerComponent() {
     const reStartTimer = () =>{
         setSecondsLeft(60)
         setStartTimer(true)
-    }
+    }*/
 
     return (
         <div>

@@ -46,24 +46,26 @@ export default function PaintHigherComponent() {
         })
 
         socket.on("turn", ({Gameid}) =>{
-            /*console.log(Gameid)
-            console.log(GameScoreId)
+            //console.log(Gameid)
+            /*console.log(GameScoreId)
             console.log(TempGameScoreId)*/
             
             if(Gameid == TempGameScoreId._id){
-                /*console.log("My turn")
-                setIsPlayerDrawing(true)*/
+                //console.log("My turn",Gameid)
+                //setIsPlayerDrawing(true)*/
                 setIsMyTurn(true)
             }
             else if( GameScoreId != null){
                 if(GameScoreId._id == Gameid)
                 {
-                    /*console.log("My turn")
-                    setIsPlayerDrawing(true)*/
+                    //console.log("My turn",Gameid)
+                    //setIsPlayerDrawing(true)*/
                     setIsMyTurn(true) 
                 }
             }
             else{
+                //console.log("Not my turn")
+                setIsMyTurn(false)
                 setIsPlayerDrawing(false)
             }
         } )

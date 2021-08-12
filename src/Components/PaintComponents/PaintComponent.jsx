@@ -151,7 +151,7 @@ export default function PaintComponent() {
                         )  : null}
                         <div className="p-0 card" style={{backgroundColor:"white",height:"10vh",width:"100%"}}>
                             {IsPlayerDrawing ? (<ToolBarComponent ClearCanvas={ClearCanvas} changeColor={ChangeColorStroke} Changestroke={ChangeStrokeSize}/>)
-                            : <div>
+                            : <div style={{textAlign:'center',paddingTop:"20px"}}>
                                 Someone else if drawing
                             </div>}
                         </div>
