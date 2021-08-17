@@ -10,6 +10,11 @@ export default function PaintComponent() {
     const {id,IsPlayerDrawing,Noun,Adjective,Animal,setIsPlayerDrawing,IsMyTurn,setIsMyTurn,UpdateWord} =  useContext(PaintContext)
     useEffect(() => {
         DrawCanvas()
+        socket.on("clearImage" , ({data}) =>{
+            if(data){
+                ctx.clearRect(0, 0, CanvasRef.current.width, CanvasRef.current.height);
+            }
+        })
     })
     const DrawingBoardRef = useRef(null)
     let firstTime = false
@@ -57,9 +62,9 @@ export default function PaintComponent() {
     }
     const ClearCanvas = () =>{
         ctx.clearRect(0, 0, CanvasRef.current.width, CanvasRef.current.height);
-        socket.emit("painting" , {
+        socket.emit("clear" , {
             gid : id,
-            data : returnCanvasImage
+            data : true
         })
     }
     const ChangeStrokeSize = (size) =>{

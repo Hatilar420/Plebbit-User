@@ -11,11 +11,6 @@ export default function PaintHigherComponent() {
     const {id} = useParams()
     const [Noun, setNoun] = useState(null)
     const [IsMyTurn, setIsMyTurn] = useState(false) 
-    const [Players,SetPlayers] = useState({
-        IsLoaded : false ,
-        players : []
-    })
-    const [IsPlayerLoaded, setIsPlayerLoaded] = useState(false)
     const [Adjective, setAdjective] = useState(null)
     const [Animal, setAnimal] = useState(null)
     const {userMap} = useLocation()
@@ -70,50 +65,7 @@ export default function PaintHigherComponent() {
             }
         } )
 
-        socket.on("Players" , ({Players}) =>{
-            console.log(Players)
-            let obj = []
-            for(let i of Players){
-                let temp = {
-                    GameId:i.GameScoreId,
-                    User:{
-                        id:i.User._id,
-                        Name : i.User.Username,
-                        url : `${ApiList.BASE}${i.User.imageUrl}`
-                    },
-                    Score : i.score
-                }
-                obj.push(temp)
-            }
-            console.log(obj)
-            SetPlayers({
-                ...Players,
-                IsLoaded : true,
-                players : obj
-            })
-            setIsPlayerLoaded(true)
-        })
     }, [])
-
-    useEffect(  () =>{
-
-        socket.on("score", async ({gameScoreId,score}) =>{
-            console.log(gameScoreId)
-            let tempPlayers = Players.players
-            console.log(IsPlayerLoaded)
-            if (Players.IsLoaded) {
-                    console.log(Players)
-                    for(let i = 0 ; i<tempPlayers.length; i++){
-                        if(tempPlayers[i].GameId == gameScoreId){
-                            tempPlayers[i].Score += score
-                            break   
-                        }
-                    }
-                    SetPlayers({...Players , players:tempPlayers})
-            }
-        })
-
-    }, [IsPlayerLoaded] )
 
 
     useEffect( async () =>{
@@ -177,7 +129,7 @@ export default function PaintHigherComponent() {
 
     return (
         <div>
-        <PaintContext.Provider value={{SendMessage ,id,IsPlayerDrawing,setIsPlayerDrawing,Noun,Adjective,Animal,IsMyTurn,setIsMyTurn,UpdateWord,Players}}>
+        <PaintContext.Provider value={{SendMessage ,id,IsPlayerDrawing,setIsPlayerDrawing,Noun,Adjective,Animal,IsMyTurn,setIsMyTurn,UpdateWord}}>
             <PaintComponent/>
         </PaintContext.Provider>
         </div>

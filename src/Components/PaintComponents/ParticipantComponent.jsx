@@ -1,9 +1,15 @@
-import React, { useState,useContext } from 'react'
-import { PaintContext } from './PaintHigherComponent'
+import React, { useEffect,useState } from 'react'
+import ApiList from '../../HelperServices/API/ApiList'
+import socket from '../../HelperServices/SocketHelper'
 
 export default function ParticipantComponent() {
 
-    const {Players} = useContext(PaintContext)
+    const [IsPlayerLoaded, setIsPlayerLoaded] = useState(false)
+    const [Players,SetPlayers] = useState({
+        IsLoaded : false ,
+        players : []
+    })
+    //const {Players} = useContext(PaintContext)
     /*const [scoreCardState, setScoreCardState] = useState([{
         User:{
             Name : "Akash",
@@ -12,6 +18,55 @@ export default function ParticipantComponent() {
         Score : 300
     }])*/
 
+    useEffect(() => {
+        
+
+        socket.on("Players" , ({Players}) =>{
+            console.log(Players)
+            let obj = []
+            for(let i of Players){
+                let temp = {
+                    GameId:i.GameScoreId,
+                    User:{
+                        id:i.User._id,
+                        Name : i.User.Username,
+                        url : `${ApiList.BASE}${i.User.imageUrl}`
+                    },
+                    Score : i.score
+                }
+                obj.push(temp)
+            }
+            console.log(obj)
+            SetPlayers({
+                ...Players,
+                IsLoaded : true,
+                players : obj
+            })
+            setIsPlayerLoaded(true)
+        })
+
+    }, [])
+
+
+    useEffect(  () =>{
+
+        socket.on("score", async ({gameScoreId,score}) =>{
+            console.log(gameScoreId)
+            let tempPlayers = Players.players
+            console.log(IsPlayerLoaded)
+            if (Players.IsLoaded) {
+                    console.log(Players)
+                    for(let i = 0 ; i<tempPlayers.length; i++){
+                        if(tempPlayers[i].GameId === gameScoreId){
+                            tempPlayers[i].Score += score
+                            break   
+                        }
+                    }
+                    SetPlayers({...Players , players:tempPlayers})
+            }
+        })
+
+    }, [IsPlayerLoaded] )
 
 
     //Call for some function to set ScoreCard
