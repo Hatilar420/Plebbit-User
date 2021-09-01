@@ -16,6 +16,7 @@ export default function PaintHigherComponent() {
     const {userMap} = useLocation()
     let TempGameScoreId = null
     const [GameScoreId, setGameScoreId] = useState(null)
+    const [isGameScoreLoaded , setGameScoreLoaded] = useState(false)
     //let IsPlayerDrawing = false
     const [IsPlayerDrawing, setIsPlayerDrawing] = useState(false)
     
@@ -29,8 +30,7 @@ export default function PaintHigherComponent() {
         socket.on("GameId", (obj) =>{
             console.log(obj)
             TempGameScoreId = obj
-            setGameScoreId(
-                obj)
+            setGameScoreId(obj)
             //GameScoreId = obj
         } )
 
@@ -67,6 +67,11 @@ export default function PaintHigherComponent() {
 
     }, [])
 
+
+    useEffect( () =>{
+        setGameScoreLoaded(true)
+
+    },[GameScoreId] )
 
     useEffect( async () =>{
 
@@ -129,7 +134,7 @@ export default function PaintHigherComponent() {
 
     return (
         <div>
-        <PaintContext.Provider value={{SendMessage ,id,IsPlayerDrawing,setIsPlayerDrawing,Noun,Adjective,Animal,IsMyTurn,setIsMyTurn,UpdateWord}}>
+        <PaintContext.Provider value={{SendMessage ,id,IsPlayerDrawing,setIsPlayerDrawing,Noun,Adjective,Animal,IsMyTurn,setIsMyTurn,UpdateWord,GameScoreId,isGameScoreLoaded}}>
             <PaintComponent/>
         </PaintContext.Provider>
         </div>

@@ -1,14 +1,18 @@
-import React, { useEffect,useState } from 'react'
+import React, { useEffect,useState,useContext } from 'react'
 import ApiList from '../../HelperServices/API/ApiList'
 import socket from '../../HelperServices/SocketHelper'
+import Peer from 'peerjs';
+import { PaintContext } from './PaintHigherComponent'
+
 
 export default function ParticipantComponent() {
-
     const [IsPlayerLoaded, setIsPlayerLoaded] = useState(false)
     const [Players,SetPlayers] = useState({
         IsLoaded : false ,
         players : []
     })
+  const {id,GameScoreId,isGameScoreLoaded} = useContext(PaintContext)    
+
     //const {Players} = useContext(PaintContext)
     /*const [scoreCardState, setScoreCardState] = useState([{
         User:{
@@ -18,15 +22,52 @@ export default function ParticipantComponent() {
         Score : 300
     }])*/
 
-    useEffect(() => {
-        
+    const UpdatePeerId  = (PlayerId , peerId) =>{
 
+            let tempPlayers = Players.players
+            //console.log(IsPlayerLoaded)
+            if (Players.IsLoaded) {
+                    console.log(Players)
+                    for(let i = 0 ; i<tempPlayers.length; i++){
+                        if(tempPlayers[i].GameId === PlayerId){
+                            tempPlayers[i].PeerId = peerId 
+                            break   
+                        }
+                    }
+                    console.log(tempPlayers)
+                    SetPlayers({...Players , players:tempPlayers})
+            }
+
+    }
+
+    useEffect(() =>{
+
+        if(isGameScoreLoaded && GameScoreId != null && IsPlayerLoaded){
+            var peer = new Peer();
+            peer.on('open',(peerId) => {
+                //console.log('My peer ID is: ' + peerId);
+                socket.emit("PeerId" , {
+                    PlayerId : GameScoreId._id,
+                    gid : id,
+                    peerId
+                })
+                UpdatePeerId(GameScoreId._id , peerId)
+            });
+            let tempPlay = Players.players
+        
+            socket.emit("getPeers" , {Players : tempPlay , gid : id} )
+        }
+
+    }, [isGameScoreLoaded,GameScoreId,IsPlayerLoaded])
+
+    useEffect(() => {
         socket.on("Players" , ({Players}) =>{
             console.log(Players)
             let obj = []
             for(let i of Players){
                 let temp = {
                     GameId:i.GameScoreId,
+                    isOnline : i.isOnline,
                     User:{
                         id:i.User._id,
                         Name : i.User.Username,
@@ -44,7 +85,6 @@ export default function ParticipantComponent() {
             })
             setIsPlayerLoaded(true)
         })
-
     }, [])
 
 
@@ -64,6 +104,17 @@ export default function ParticipantComponent() {
                     }
                     SetPlayers({...Players , players:tempPlayers})
             }
+        })
+
+        socket.on("PeerResult", ({peerId , GameId}) => {
+            console.log("logged",peerId,GameId)
+            UpdatePeerId(GameId,peerId)
+
+        })
+
+        socket.on("PlayerPeerId", ({PlayerId,peerId}) => {
+            //console.log("logged",peerId,PlayerId)
+            UpdatePeerId(PlayerId,peerId)
         })
 
     }, [IsPlayerLoaded] )
