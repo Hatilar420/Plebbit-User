@@ -1,20 +1,6 @@
 import React from 'react'
 import '../Styles/HeaderComponentStyle.css'
-import {
-    Collapse,
-    Navbar,
-    NavbarToggler,
-    NavbarBrand,
-    Nav,
-    NavItem,
-    NavLink,
-    UncontrolledDropdown,
-    DropdownToggle,
-    DropdownMenu,
-    DropdownItem,
-  //  NavbarText,
-    Button
-  } from 'reactstrap';
+import {Button} from 'reactstrap';
   import TextField from '@material-ui/core/TextField';
   import Dialog from '@material-ui/core/Dialog';
   import DialogActions from '@material-ui/core/DialogActions';
@@ -23,7 +9,7 @@ import {
   import DialogTitle from '@material-ui/core/DialogTitle';
   import ApiList from '../HelperServices/API/ApiList';
   import LoginUtil from '../HelperServices/LogInHelper';
-  import { useHistory , Link } from "react-router-dom";
+  import { useHistory } from "react-router-dom";
 
 
 
@@ -93,43 +79,14 @@ export default function HeaderComponent() {
 
     return (
         <div>
-            <Navbar color="dark" className="p-2 MainHeadContainer" dark expand="md">
-        <NavbarBrand href="/">Plebbit</NavbarBrand>
-        <NavbarToggler  />
-        <Collapse navbar>
-          <Nav className="mr-auto" navbar>
-            <NavItem>
-              <NavLink href="/paint">Paint</NavLink>
-            </NavItem>
-            <NavItem>
-              <Link to="/profile" style={{textDecoration:"none"}}><NavLink>Profile</NavLink></Link>
-            </NavItem>
-            <UncontrolledDropdown nav inNavbar>
-              <DropdownToggle nav caret>
-                Options
-              </DropdownToggle>
-              <DropdownMenu right>
-                <DropdownItem>
-                  Option 1
-                </DropdownItem>
-                <DropdownItem>
-                  Option 2
-                </DropdownItem>
-                <DropdownItem divider />
-                <DropdownItem>
-                  Reset
-                </DropdownItem>
-              </DropdownMenu>
-            </UncontrolledDropdown>
-          </Nav>
-        </Collapse>
-        <NavItem>
+        <div className="p-2 MainHeadContainer">
+          <div  className="NavButtons">
             <Button color="success" onClick={handleRedirectSignUp}>Sign Up</Button>
-        </NavItem>
-        <NavItem>
+          </div>
+          <div className="NavButtons">
           { IsLogedIn ? <Button color="danger" onClick={Signout}>Sign out</Button> : <Button color="primary" onClick={handleClickOpen}>Sign in</Button> }
-        </NavItem>
-      </Navbar>
+          </div>
+      </div>
       <Dialog open={open}  onClose={handleClose} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title" 
         style={

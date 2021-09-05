@@ -1,11 +1,13 @@
-import React, { useEffect,useState,useContext } from 'react'
+import React, { useEffect,useState,useContext,useRef } from 'react'
 import ApiList from '../../HelperServices/API/ApiList'
 import socket from '../../HelperServices/SocketHelper'
 import PeerObj from './Peers/PeerHelper'
 import { PaintContext } from './PaintHigherComponent'
+import AudioComponent from './AudioComponent'
 
 export default function ParticipantComponent() {
     const [IsPlayerLoaded, setIsPlayerLoaded] = useState(false)
+    const [AudioRefState,setAudioRefState] = useState({})
     const [Players,SetPlayers] = useState({
         IsLoaded : false ,
         players : []
@@ -57,6 +59,21 @@ export default function ParticipantComponent() {
 
 }
 
+
+const AnswerCallCb = (peerId,mediastream) =>{
+    console.log("Here")
+    console.log(Players.IsLoaded)
+    if (Players.IsLoaded) {
+            //console.log("here")
+            console.log(AudioRefState[peerId],mediastream)
+            console.log(AudioRefState[peerId].srcObject)
+            AudioRefState[peerId].srcObject = mediastream
+            console.log(AudioRefState[peerId].srcObject)
+            }
+    
+    }
+
+
     useEffect(() =>{
 
         if(isGameScoreLoaded && GameScoreId != null && IsPlayerLoaded){
@@ -74,8 +91,9 @@ export default function ParticipantComponent() {
 
     }, [isGameScoreLoaded,GameScoreId,IsPlayerLoaded])
 
-    useEffect(() => {
 
+
+    useEffect(() => {
 
         socket.on("Players" , ({Players}) =>{
             console.log(Players)
@@ -107,6 +125,10 @@ export default function ParticipantComponent() {
     useEffect(  () =>{
 
     
+        if(IsPlayerLoaded)
+        {
+            PeerObj.receievePeerCall(AnswerCallCb)
+        }
         socket.on("score", async ({gameScoreId,score}) =>{
             console.log(gameScoreId)
             let tempPlayers = Players.players
@@ -129,8 +151,12 @@ export default function ParticipantComponent() {
 
         })
 
-        socket.on("PlayerPeerId", ({PlayerId,peerId}) => {
+        socket.on("PlayerPeerId", async ({PlayerId,peerId}) => {
             //console.log("logged",peerId,PlayerId)
+            let audioStream = await navigator.mediaDevices.getUserMedia({
+                audio:true
+            })
+            PeerObj.CallPeer(peerId,audioStream)
             UpdatePeerId(PlayerId,peerId)
             UpdateOnlineStatus(PlayerId,true)
         })
@@ -142,10 +168,17 @@ export default function ParticipantComponent() {
 
     }, [IsPlayerLoaded] )
 
+    const UpdateAudioRefState = (peerId,audioRef) =>{
+        if(peerId != null){
+            AudioRefState[peerId] = audioRef.current
+            setAudioRefState(AudioRefState)
+    }
+}
+
 
     //Call for some function to set ScoreCard
 
-    const RenderScoreCard = ({User,Score}) =>{
+    const RenderScoreCard = ({User,Score,peerId}) =>{
         return (
             <div className="row m-0 pt-1 mt-1" style={{height:"10vh",width:"100%"}}>
                     <div className="col-6">
@@ -157,6 +190,7 @@ export default function ParticipantComponent() {
                             <span style={{fontSize:"0.9rem"}}>Score:</span>
                             <span style={{fontSize:"0.9rem"}}>{Score}</span>
                         </div>
+                        <AudioComponent peerid = {peerId} setAudioref = {UpdateAudioRefState} />
                     </div>
                 </div>
         )
@@ -164,7 +198,7 @@ export default function ParticipantComponent() {
 
     const RenderScoreCards = () =>{
 
-        return Players.players.map(x => <RenderScoreCard key={x.User.id} User={x.User} Score={x.Score}/>)
+        return Players.players.map(x => <RenderScoreCard key={x.User.id} User={x.User} Score={x.Score} peerId={x.PeerId}/>)
     }
 
     return (

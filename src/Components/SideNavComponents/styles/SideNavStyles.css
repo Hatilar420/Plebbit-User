@@ -1,0 +1,56 @@
+.NavBody{
+
+    background-color: #1b1b2e;
+    width:4vw;
+    height: 100vh;
+    transition: all 500ms;
+    padding: 0;
+}
+
+.NavBody-Active {
+    
+    background-color: #1b1b2e;
+    width: 10vw;
+    height: 100vh;
+    transition: all 500ms;
+    padding: 0;
+}
+
+.NavBody-Head{
+
+    height: 10vh;
+    padding-top: 10px;
+    border-bottom: 1px solid black;
+    min-width:10vw;
+}
+
+.NavBody-LinkBox{
+
+    min-width:10vw;
+    margin-bottom:10px;
+    
+}
+
+.NavBody-LinkText{
+
+    color: white;
+    text-decoration: none;
+    font-size: 1vw ;
+
+}
+
+.NavBody-LinkBox:hover{
+    background-color: #5426d4 ;
+    transition: 100ms;
+}
+
+.NavBody-HeadText {
+    color: white;
+    font-size: 1.4rem ;
+}
+
+
+.NavBody-Icon {
+    color: white;
+    font-size: 3vw;
+}
