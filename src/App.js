@@ -9,8 +9,18 @@ import GroupLanding from './Components/GroupComponents/GroupLanding';
 import SignUpComponent from './Components/ServiceComponents/SignUpComponent';
 import PaintHigherComponent from './Components/PaintComponents/PaintHigherComponent';
 import SideNav from './Components/SideNavComponents/SideNav';
+import React,{ useState} from 'react';
+
+export const PlebContext = React.createContext()
+
 function App() {
+  const [AuthUserState, setAuthUserState] = useState({
+    IsAuthenticated : false
+
+  }) 
+  const [GroupGlobalState, setGroupGlobalState] = useState(null)
   return (
+    <PlebContext.Provider value={{AuthUserState,setAuthUserState,setGroupGlobalState,GroupGlobalState}}>
     <Router>
       <div className="App">
         <div className="d-flex">
@@ -37,7 +47,7 @@ function App() {
         </div>
       </div>
     </Router>
-   
+   </PlebContext.Provider>
   );
 }
 

@@ -31,6 +31,19 @@
     
 }
 
+.NavBody-Image{
+    display: inline-block;
+    max-width: 4vw;
+    padding:5px;
+}
+
+.NavBody-InnerImage{
+
+    height: 6vh;
+    width:100%;
+
+}
+
 .NavBody-LinkText{
 
     color: white;

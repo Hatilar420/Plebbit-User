@@ -1,4 +1,4 @@
-import React , {useEffect,useReducer} from 'react'
+import React , {useEffect,useReducer,useContext} from 'react'
 import Card from '@material-ui/core/Card';
 import '../../Styles/FrontPageComponentStyle.css'
 import CardContent from '@material-ui/core/CardContent'
@@ -14,6 +14,7 @@ import ApiList from '../../HelperServices/API/ApiList';
 import LoginUtil from '../../HelperServices/LogInHelper';
 import GroupPreview from './GroupPreview';
 import { genralReducer, genralState, setGenralSuccess } from './Reducers/genralReducer';
+import { PlebContext } from '../../App';
 export default function FrontPageComponent() {
 
     useEffect(  () => {
@@ -22,7 +23,7 @@ export default function FrontPageComponent() {
         GetUserGroups(setUserGroups)
     } , [])
 
-
+    const {setAuthUserState,setGroupGlobalState,GroupGlobalState} = useContext(PlebContext)
     const [UserState, UserStateDispatch] = useReducer(genralReducer,genralState)
     const [UserGropState, UserGroupDispatch] = useReducer(genralReducer, genralState)
     const [PostState, PostStateDispatch] = useReducer(genralReducer,genralState)
@@ -66,7 +67,8 @@ export default function FrontPageComponent() {
     }
 
     const setUserGroups = (data) =>{
-        console.log(data)
+        //console.log(data)
+        setGroupGlobalState(data)
         UserGroupDispatch(setGenralSuccess(data))
     }
 
@@ -76,6 +78,16 @@ export default function FrontPageComponent() {
         console.log(data)
         UserStateDispatch(setGenralSuccess(data))
     }
+
+    useEffect( () =>{
+
+        if(!UserState.isLoading){
+            let temp = UserState.data
+            temp.IsAuthenticated = true
+            setAuthUserState(temp)
+        }
+
+    },[UserState,setAuthUserState] )
 
     const setPost = (data) =>{
         data.isLiked = false
@@ -149,7 +161,6 @@ export default function FrontPageComponent() {
 
 
     const MapPostState = () =>{
-        console.log(PostState)
         return PostState.data.map( (x,index) => <div key={x._id} className="col-3">{RenderCard(x,index)}</div>  )
     }
 
@@ -159,9 +170,6 @@ export default function FrontPageComponent() {
                 {!UserState.isLoading ?  (<div className="mt-4" style={{height:"25vh"}}>
                      <UserProfilePreview User={UserState.data} Posts={PostState} />
                 </div>) : null  }
-                {!UserGropState.isLoading ? <div className="mt-4" style={{height:"25vh",border:"1px solid white"}}>
-                     <GroupPreview Groups={UserGropState.data} />
-                </div> : null }
                 <div>
                     <div className="card mt-2 mb-4" style={{borderRadius:"10px",backgroundColor:"#411969"}}>
                     <div className="card-body">
